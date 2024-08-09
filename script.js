@@ -22,50 +22,6 @@ agregarImagenDescripción.setAttribute('placeholder','Ingrese el titulo');
 agregarImagenBoton.classList.add('subir-imagen');
 agregarImagenBoton.innerText = 'SUBIR';
 
-//Elementos de imagenes nuevas
-
-var nuevaImagen = document.createElement('div');
-var nuevaImagenTitulo = document.createElement('h3');
-var nuevaImagenFondo = document.createElement('img');
-var nuevaImagenBotones = document.createElement('div');
-var nuevaImagenBotonEliminar = document.createElement('button');
-var nuevaImagenBotonDetalles = document.createElement('button');
-
-//se agregan las clases y atributos a los elemento de las imagenes nuevas
-
-nuevaImagen.classList.add('contenido-imagen');
-
-nuevaImagenTitulo.classList.add('titulo-imagen');
-
-nuevaImagenFondo.classList.add('imagen');
-nuevaImagenFondo.setAttribute('alt', 'imagen');
-
-nuevaImagenBotones.classList.add('botones');
-
-nuevaImagenBotonEliminar.classList.add('eliminar-imagen');
-nuevaImagenBotonEliminar.innerText = 'Eliminar imagen';
-
-nuevaImagenBotonDetalles.classList.add('detalles');
-nuevaImagenBotonDetalles.innerText = 'Ver detalles';
-
-//Se crean los elementos del modal
-
-var modal = document.createElement('dialog');
-var modalTitulo = document.createElement('h3');
-var modalImagen = document.createElement('img');
-var moldalBotonCerrar = document.createElement('button');
-
-
-//Se agregan clases y id a los elementos del modal
-
-modal.setAttribute('id', 'modal');
-
-modalTitulo.classList.add('titulo-imagen');
-
-modalImagen.classList.add('imagen-modal');
-
-moldalBotonCerrar.classList.add('cerra-modal');
-
 //Se agrega los inputs y un boton, que permiten agregar nuevas imagenes
 
 for(var valor of btnAgregarImagenElemento){
@@ -84,24 +40,99 @@ agregarImagenBoton.addEventListener('click', (e)=>{
     var datoTitulo = agregarImagenDescripción.value;
 
     for(var valor of imagenes){
-        valor.appendChild(nuevaImagen);
-        nuevaImagen.append(nuevaImagenTitulo);
-        nuevaImagen.append(nuevaImagenFondo);
-        nuevaImagen.append(nuevaImagenBotones);
-        nuevaImagenBotones.append(nuevaImagenBotonEliminar);
-        nuevaImagenBotones.append(nuevaImagenBotonDetalles);
+        console.log(valor)
 
-        if(datoURL.length === 0){
-            nuevaImagenFondo.setAttribute('src', 'https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg');     
+        if(datoURL.length != 0){ 
+            if(datoTitulo.length != 0){
+
+                //Elementos de imagenes nuevas
+
+                var nuevaImagen = document.createElement('div');
+                var nuevaImagenTitulo = document.createElement('h3');
+                var nuevaImagenFondo = document.createElement('img');
+                var nuevaImagenBotones = document.createElement('div');
+                var nuevaImagenBotonEliminar = document.createElement('button');
+                var nuevaImagenBotonDetalles = document.createElement('button');
+
+                //se agregan las clases y atributos a los elemento de las imagenes nuevas
+
+                nuevaImagen.classList.add('contenido-imagen');
+
+                nuevaImagenTitulo.classList.add('titulo-imagen');
+
+                nuevaImagenFondo.classList.add('imagen');
+                nuevaImagenFondo.setAttribute('alt', 'imagen');
+
+                nuevaImagenBotones.classList.add('botones');
+
+                nuevaImagenBotonEliminar.classList.add('eliminar-imagen');
+                nuevaImagenBotonEliminar.innerText = 'Eliminar imagen';
+
+                nuevaImagenBotonDetalles.classList.add('detalles');
+                nuevaImagenBotonDetalles.innerText = 'Ver detalles';
+
+                nuevaImagen.append(nuevaImagenTitulo);
+                nuevaImagen.append(nuevaImagenFondo);
+                nuevaImagen.append(nuevaImagenBotones);
+                nuevaImagenBotones.append(nuevaImagenBotonEliminar);
+                nuevaImagenBotones.append(nuevaImagenBotonDetalles);
+
+                nuevaImagenTitulo.innerText = datoTitulo;
+                nuevaImagenFondo.setAttribute('src', datoURL); 
+
+                valor.appendChild(nuevaImagen);
+                
+                agregarImagenURL.value = ""; 
+                agregarImagenDescripción.value = "";
+
+                
+                nuevaImagenBotonEliminar.addEventListener('click', (e)=>{
+                    nuevaImagen.remove();
+                });
+
+                nuevaImagenBotonDetalles.addEventListener('click',(e)=>{
+
+                    //Se crean los elementos del modal
+
+                    var modal = document.createElement('dialog');
+                    var modalTitulo = document.createElement('h3');
+                    var modalImagen = document.createElement('img');
+                    var moldalBotonCerrar = document.createElement('button');
+
+                    //Se agregan clases y id a los elementos del modal
+
+                    modal.setAttribute('id', 'modal');
+
+                    modalTitulo.classList.add('titulo-imagen');
+
+                    modalImagen.classList.add('imagen-modal');
+
+                    moldalBotonCerrar.classList.add('cerra-modal');
+
+                    modal.remove();
+                    body.append(modal);
+                    modal.append(modalTitulo);
+                    modalTitulo.innerText= nuevaImagenTitulo.innerText;
+                    modal.append(modalImagen);
+                    modalImagen.setAttribute('src', nuevaImagenFondo.getAttribute('src'));
+                    modal.append(moldalBotonCerrar);
+                    moldalBotonCerrar.innerText = 'Cerrar';
+                    modal.show();
+                    console.log(nuevaImagenFondo.getAttribute('src'))
+
+                    cerrarModal(modal, moldalBotonCerrar);                   
+                });
+
+
+                break
+            }else{
+                alert("Ingrese un título a la imagen");
+                break
+            } 
         }else{
-            nuevaImagenFondo.setAttribute('src', datoURL);    
+            alert("Ingrese una URL");
+            break
         }
-        
-        if(datoTitulo.length === 0){
-            nuevaImagenTitulo.innerText = 'Titulo de la imágen';
-        }else{
-            nuevaImagenTitulo.innerText = datoTitulo;
-        }  
     }
 
     agregarImagenURL.remove();
@@ -120,14 +151,28 @@ for(var valor of btnEliminarImagenElemento){
     });
 }
 
-nuevaImagenBotonEliminar.addEventListener('click', (e)=>{
-    nuevaImagen.remove();
-});
-
 //MODAL
 
 for(var valor of btnInfoImagenElemento){
     valor.addEventListener("click",(e)=>{
+
+        //Se crean los elementos del modal
+
+        var modal = document.createElement('dialog');
+        var modalTitulo = document.createElement('h3');
+        var modalImagen = document.createElement('img');
+        var moldalBotonCerrar = document.createElement('button');
+
+        //Se agregan clases y id a los elementos del modal
+
+        modal.setAttribute('id', 'modal');
+
+        modalTitulo.classList.add('titulo-imagen');
+
+        modalImagen.classList.add('imagen-modal');
+
+        moldalBotonCerrar.classList.add('cerra-modal');
+
         body.append(modal);
         modal.append(modalTitulo);
         modalTitulo.innerText = 'Inteligencias Multiples';
@@ -135,25 +180,18 @@ for(var valor of btnInfoImagenElemento){
         modalImagen.setAttribute('src', './imagenes/Inteligencias-Múltiples.webp');
         modal.append(moldalBotonCerrar);
         moldalBotonCerrar.innerText = 'Cerrar';
-        modal.show();
+        modal.show();  
+
+        cerrarModal(modal, moldalBotonCerrar);
     });
 }
 
-moldalBotonCerrar.addEventListener('click',(e)=>{
-    modal.close();
-    modal.remove();
-});
 
-nuevaImagenBotonDetalles.addEventListener('click',(e)=>{
+//CERRAR MODAL
 
-    modal.remove();
-    body.append(modal);
-    modal.append(modalTitulo);
-    modalTitulo.innerText= nuevaImagenTitulo.innerText;
-    modal.append(modalImagen);
-    modalImagen.setAttribute('src', nuevaImagenFondo.getAttribute('src'));
-    modal.append(moldalBotonCerrar);
-    moldalBotonCerrar.innerText = 'Cerrar';
-    modal.show();
-    console.log(nuevaImagenFondo.getAttribute('src'))
-});
+function cerrarModal(modal, moldalBotonCerrar){
+    moldalBotonCerrar.addEventListener('click',(e)=>{
+        modal.close();
+        modal.remove();
+    }); 
+}
